@@ -85,7 +85,7 @@ set -g repeat-time 3000
 | `prefix + s d` | Delete/clear a specific slot (prompted) |
 | `prefix + s m` | Move/reorder a slot (prompted: `from:to` format) |
 | `prefix + s l` | List all occupied slots in fzf with preview |
-| `prefix + s s` | Show all occupied slots in the tmux message bar |
+| `prefix + s s` | Show all occupied slots in the tmux message bar for 5 seconds |
 | `prefix + s ?` | Show focus-mode help |
 | `prefix + s c` | Clear all 10 slots (with y/n confirmation) |
 | `prefix + s Esc` | Exit focus key table without action |
