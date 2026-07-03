@@ -4,7 +4,7 @@ set -euo pipefail
 CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPTS_DIR="$CURRENT_DIR/scripts"
 
-tmux bind-key s display-message -d 5000 "focus: 1-0 jump | a add | A assign | l list | ? help" \; switch-client -T tmux-window-focus
+tmux bind-key s display-message -d 8000 "focus: 1-0 jump | a add | A assign | l list | ? help" \; switch-client -T tmux-window-focus
 
 tmux bind-key -T tmux-window-focus 1 run-shell -b "$SCRIPTS_DIR/focus-go.sh 1"
 tmux bind-key -T tmux-window-focus 2 run-shell -b "$SCRIPTS_DIR/focus-go.sh 2"
@@ -23,6 +23,6 @@ tmux bind-key -T tmux-window-focus d command-prompt -p "delete slot (1-10)" "run
 tmux bind-key -T tmux-window-focus m command-prompt -p "move from:to (e.g. 5:2)" "run-shell -b '$SCRIPTS_DIR/focus-move.sh %%'"
 tmux bind-key -T tmux-window-focus l run-shell -b "$SCRIPTS_DIR/focus-list.sh"
 tmux bind-key -T tmux-window-focus s run-shell -b "$SCRIPTS_DIR/focus-show.sh"
-tmux bind-key -T tmux-window-focus ? display-message -d 5000 "focus: 1-0 jump | a add | A assign | d delete | m move | l list | s show | c clear"
+tmux bind-key -T tmux-window-focus ? display-message -d 8000 "focus: 1-0 jump | a add | A assign | d delete | m move | l list | s show | c clear"
 tmux bind-key -T tmux-window-focus c confirm-before -p "clear all focus slots? (y/n)" "run-shell -b '$SCRIPTS_DIR/focus-clear.sh'"
 tmux bind-key -T tmux-window-focus Escape switch-client -T root

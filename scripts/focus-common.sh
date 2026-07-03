@@ -72,7 +72,7 @@ slot_is_empty() {
 }
 
 display_msg() {
-  tmux display-message -d "${FOCUS_MESSAGE_DURATION:-5000}" "$*"
+  tmux display-message -d "${FOCUS_MESSAGE_DURATION:-8000}" "$*"
 }
 
 get_window_id() {
