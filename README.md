@@ -63,7 +63,7 @@ tmux source-file ~/.tmux.conf
 
 ### Entering the focus key table
 
-Press **`prefix + s`**. This enters the `tmux-window-focus` key table and shows a short help message in the tmux message bar.
+Press **`prefix + s`**. This enters the `tmux-window-focus` key table and shows a short help message in the tmux message bar for 5 seconds.
 
 The next key (`a`, `1`, `l`, etc.) must be pressed before tmux's `repeat-time` expires. If tmux returns to the normal key table too quickly, increase it in `~/.tmux.conf`:
 
@@ -86,6 +86,7 @@ set -g repeat-time 3000
 | `prefix + s m` | Move/reorder a slot (prompted: `from:to` format) |
 | `prefix + s l` | List all occupied slots in fzf with preview |
 | `prefix + s s` | Show all occupied slots in the tmux message bar |
+| `prefix + s ?` | Show focus-mode help |
 | `prefix + s c` | Clear all 10 slots (with y/n confirmation) |
 | `prefix + s Esc` | Exit focus key table without action |
 
