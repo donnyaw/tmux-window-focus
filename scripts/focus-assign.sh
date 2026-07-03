@@ -16,5 +16,7 @@ if ! [[ "$slot" =~ ^[1-9]$|^10$ ]]; then
 fi
 
 target=$(get_current_target)
+window_id=$(get_window_id "$target")
+clear_window_id_except "$window_id" "$slot"
 write_slot "$slot" "$target"
 display_msg "assigned $(get_session "$target"):$(get_window_index "$target") to slot $slot"

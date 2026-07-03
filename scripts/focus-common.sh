@@ -7,6 +7,11 @@ ensure_list_file() {
   if [[ ! -f "$FOCUS_FILE" ]]; then
     for _ in $(seq 1 "$FOCUS_SLOTS"); do echo ""; done > "$FOCUS_FILE"
   fi
+
+  local tmp
+  tmp=$(mktemp)
+  awk -v slots="$FOCUS_SLOTS" 'NR <= slots { print } END { for (i = NR + 1; i <= slots; i++) print "" }' "$FOCUS_FILE" > "$tmp"
+  mv "$tmp" "$FOCUS_FILE"
 }
 
 read_slot() {
@@ -43,6 +48,22 @@ count_occupied() {
   awk 'NF > 0 { c++ } END { print c+0 }' "$FOCUS_FILE"
 }
 
+find_slot_by_window_id() {
+  local window_id="$1"
+  ensure_list_file
+  awk -v wid="$window_id" '$1 == wid { print NR; exit }' "$FOCUS_FILE"
+}
+
+clear_window_id_except() {
+  local window_id="$1"
+  local keep_slot="$2"
+  ensure_list_file
+  local tmp
+  tmp=$(mktemp)
+  awk -v wid="$window_id" -v keep="$keep_slot" 'NR != keep && $1 == wid { print ""; next } { print }' "$FOCUS_FILE" > "$tmp"
+  mv "$tmp" "$FOCUS_FILE"
+}
+
 slot_is_empty() {
   local slot="$1"
   local val
@@ -70,6 +91,9 @@ switch_to_window() {
   local target="$1"
   local wid
   wid=$(get_window_id "$target")
+  if ! tmux display-message -p -t "$wid" '#{window_id}' >/dev/null 2>&1; then
+    return 1
+  fi
   tmux switch-client -t "$(get_session "$target")"
   tmux select-window -t "$wid"
 }

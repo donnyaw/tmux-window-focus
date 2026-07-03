@@ -35,6 +35,8 @@ set -g @plugin 'donnyaw/tmux-window-focus'
 
 Press `prefix + I` to install.
 
+TPM loads the root `tmux-window-focus.tmux` file automatically.
+
 ### Option 2: Manual
 
 Clone the repository:
@@ -46,7 +48,7 @@ git clone https://github.com/donnyaw/tmux-window-focus.git ~/.tmux/plugins/tmux-
 Add to your `~/.tmux.conf`:
 
 ```tmux
-source-file ~/.tmux/plugins/tmux-window-focus/tmux-window-focus.conf
+run-shell ~/.tmux/plugins/tmux-window-focus/tmux-window-focus.tmux
 ```
 
 Reload tmux:
@@ -61,7 +63,7 @@ tmux source-file ~/.tmux.conf
 
 ### Entering the focus key table
 
-Press **`prefix + s`** (the prefix is `Ctrl+Space` by default in this config, but works with any prefix). This enters the `opencode-focus` key table. A prompt or message will **not** appear by default — you are now in "focus mode."
+Press **`prefix + s`**. This enters the `tmux-window-focus` key table. A prompt or message will **not** appear by default — you are now in "focus mode."
 
 ### Key reference
 
@@ -72,7 +74,7 @@ Press **`prefix + s`** (the prefix is `Ctrl+Space` by default in this config, bu
 | ... | ... |
 | `prefix + s 9` | Jump to slot 9 |
 | `prefix + s 0` | Jump to slot 10 |
-| `prefix + s a` | Add current window to the first free slot (auto) |
+| `prefix + s a` | Add current window to the first free slot (auto, no duplicates) |
 | `prefix + s A` | Assign current window to a specific slot (prompted) |
 | `prefix + s d` | Delete/clear a specific slot (prompted) |
 | `prefix + s m` | Move/reorder a slot (prompted: `from:to` format) |
@@ -91,11 +93,15 @@ Press **`prefix + s`** (the prefix is `Ctrl+Space` by default in this config, bu
 2. `prefix + s a` — adds it to the first free slot.
 3. `prefix + s 1` — jumps back to it later.
 
+If the current window is already focused, it will not be added again. tmux shows the existing slot number instead.
+
 ### Assign to a specific slot
 
 1. Navigate to the window.
 2. `prefix + s A`, type `5`, press Enter.
 3. The window is now in slot 5. `prefix + s 5` jumps to it.
+
+Assigning to a specific slot overwrites that slot. If the same window already exists in another slot, the old entry is cleared so one window is only stored once.
 
 ### Reorder by priority
 
@@ -175,7 +181,7 @@ Now:
 
 ## Scripts reference
 
-All scripts live in `scripts/` and are sourced from the key bindings.
+All scripts live in `scripts/` and are called from the key bindings.
 
 | Script | Purpose | Arguments |
 |---|---|---|
@@ -191,7 +197,7 @@ All scripts live in `scripts/` and are sourced from the key bindings.
 
 ### Running scripts directly
 
-All scripts can be run from outside tmux for testing:
+Scripts can be run from a shell attached to a running tmux server for testing:
 
 ```bash
 cd ~/.tmux/plugins/tmux-window-focus/scripts
@@ -200,7 +206,7 @@ cd ~/.tmux/plugins/tmux-window-focus/scripts
 ./focus-show.sh
 ```
 
-Messages are displayed via `tmux display-message` (visible in tmux status). When run outside tmux, messages may appear on stderr.
+Messages are displayed via `tmux display-message` and appear in the tmux message bar.
 
 ---
 
@@ -213,7 +219,7 @@ Edit the binding in `tmux-window-focus.conf` or your `.tmux.conf`:
 ```tmux
 # Example: use prefix + z instead of prefix + s
 unbind s
-bind z switch-client -T opencode-focus
+bind z switch-client -T tmux-window-focus
 ```
 
 ### Change number of slots
@@ -251,7 +257,7 @@ count_occupied
 User presses prefix + s
   │
   ▼
-enters opencode-focus key table
+enters tmux-window-focus key table
   │
   ├── 1-0 → focus-go.sh N → read slot N → switch to window
   ├── a   → focus-add.sh  → find empty slot → write current window
@@ -277,6 +283,8 @@ focus-common.sh
   ├── switch_to_window()   — switch client + select window
   └── display_msg()        — tmux display-message
 ```
+
+The root `tmux-window-focus.tmux` file is the plugin entrypoint. It detects the plugin directory and binds all commands to the correct local `scripts/` path, which makes TPM and custom clone paths work reliably.
 
 ---
 

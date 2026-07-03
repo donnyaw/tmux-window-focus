@@ -26,5 +26,8 @@ if ! tmux has-session -t "$(get_session "$target")" 2>/dev/null; then
   exit 0
 fi
 
-switch_to_window "$target"
+if ! switch_to_window "$target"; then
+  display_msg "focus slot $slot: window no longer exists"
+  exit 0
+fi
 display_msg "jumped to focus slot $slot"

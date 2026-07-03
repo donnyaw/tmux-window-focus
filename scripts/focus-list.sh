@@ -42,4 +42,6 @@ wid=$(echo "$selection" | cut -f4)
 sess=$(echo "$selection" | cut -f3)
 
 tmux switch-client -t "$sess"
-tmux select-window -t "$wid"
+if ! tmux select-window -t "$wid" 2>/dev/null; then
+  display_msg "focus target no longer exists"
+fi

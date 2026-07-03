@@ -13,7 +13,7 @@ fi
 from="${input%%:*}"
 to="${input##*:}"
 
-if [[ -z "$from" || -z "$to" ]]; then
+if [[ "$input" != *:* || -z "$from" || -z "$to" ]]; then
   display_msg "invalid format: use from:to"
   exit 1
 fi
