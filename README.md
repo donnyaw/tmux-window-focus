@@ -127,7 +127,7 @@ When slots 1-5 are filled and you want to promote slot 5 to slot 2:
 ### Show status bar
 
 1. `prefix + s s`
-2. A message like `focus: [1]3 editor (@12) [2]1 tests (@18)` appears briefly.
+2. A message like `focus: [1]editor [work] [2]tests [project]` appears briefly.
 
 ---
 
@@ -153,7 +153,7 @@ Example:
 @5
 ```
 
-Slots 3, 6-10 are empty (free). You can edit this file manually — the scripts re-read it each time. Session name is **not stored or shown**. Window index and window name are resolved live from tmux only for display.
+Slots 3, 6-10 are empty (free). You can edit this file manually — the scripts re-read it each time. Session name is **not stored**. Window name and session name are resolved live from tmux only for display, using the pattern `window-name [session-name]`.
 
 ### Why window_id?
 

@@ -91,7 +91,7 @@ target_session() {
 }
 
 target_label() {
-  tmux display-message -p -t "$(get_window_id "$1")" '#{window_index} #{window_name} (#{window_id})'
+  tmux display-message -p -t "$(get_window_id "$1")" '#{window_name} [#{session_name}]'
 }
 
 switch_to_window() {
