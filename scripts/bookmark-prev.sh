@@ -2,4 +2,4 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-exec "$SCRIPT_DIR/focus-next.sh" prev
+exec "$SCRIPT_DIR/bookmark-next.sh" prev

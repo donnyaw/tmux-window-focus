@@ -1,54 +1,40 @@
-# tmux-window-focus
+# tmux-window-bookmarks
 
-**10-slot speed dial for tmux windows across all sessions.**
+**10-slot bookmarks for tmux windows across all sessions.**
 
-Assign your most important tmux windows to numbered slots (1-10), then jump to them instantly with `prefix + s 1` through `prefix + s 0`. Manage slots via an intuitive key table: add, assign, delete, reorder, list with fzf, and clear.
-
----
-
-## Problem
-
-When you have many tmux sessions and windows (e.g., project work, logs, editors, servers), finding and switching to the right window is tedious. Built-in tools like `choose-tree` don't have fuzzy filtering, and general fzf-switchers require navigating a hierarchy or picking a category first.
-
-`tmux-window-focus` solves this with a **curated priority list**. You decide which windows matter most, assign them to numbered slots (like a speed dial), and switch in one keystroke.
-
----
+Bookmark your most important tmux windows into numbered slots from 1 to 10, then jump to them instantly with `prefix + s 1` through `prefix + s 0`. Manage slots with add, assign, delete, reorder, list, show, and clear actions.
 
 ## Requirements
 
-- **tmux** 3.0 or later
-- **fzf** with `fzf-tmux` (for the list view only; slot jumping works without it)
+- tmux 3.0 or later
+- fzf with `fzf-tmux` for the list view
 
-Install fzf via your package manager or from [junegunn/fzf](https://github.com/junegunn/fzf).
-
----
+Slot jumping works without fzf; only `prefix + s l` needs `fzf-tmux`.
 
 ## Installation
 
-### Option 1: TPM (recommended)
+### TPM
 
-Add to your `~/.tmux.conf`:
+Add to `~/.tmux.conf`:
 
 ```tmux
-set -g @plugin 'donnyaw/tmux-window-focus'
+set -g @plugin 'donnyaw/tmux-window-bookmarks'
 ```
 
 Press `prefix + I` to install.
 
-TPM loads the root `tmux-window-focus.tmux` file automatically.
+TPM loads `tmux-window-bookmarks.tmux` automatically.
 
-### Option 2: Manual
-
-Clone the repository:
+### Manual
 
 ```bash
-git clone https://github.com/donnyaw/tmux-window-focus.git ~/.tmux/plugins/tmux-window-focus
+git clone https://github.com/donnyaw/tmux-window-bookmarks.git ~/.tmux/plugins/tmux-window-bookmarks
 ```
 
-Add to your `~/.tmux.conf`:
+Add to `~/.tmux.conf`:
 
 ```tmux
-run-shell ~/.tmux/plugins/tmux-window-focus/tmux-window-focus.tmux
+run-shell ~/.tmux/plugins/tmux-window-bookmarks/tmux-window-bookmarks.tmux
 ```
 
 Reload tmux:
@@ -57,292 +43,134 @@ Reload tmux:
 tmux source-file ~/.tmux.conf
 ```
 
----
-
 ## Usage
 
-### Entering the focus key table
-
-Press **`prefix + s`**. This enters the `tmux-window-focus` key table and shows a short help message in the tmux message bar for 8 seconds.
-
-The next key (`a`, `1`, `l`, etc.) must be pressed before tmux's `repeat-time` expires. If tmux returns to the normal key table too quickly, increase it in `~/.tmux.conf`:
-
-```tmux
-set -g repeat-time 8000
-```
-
-### Key reference
+Press `prefix + s` to enter the `tmux-window-bookmarks` key table.
 
 | Key sequence | Action |
 |---|---|
-| `prefix + s 1` | Jump to slot 1 |
-| `prefix + s 2` | Jump to slot 2 |
-| ... | ... |
-| `prefix + s 9` | Jump to slot 9 |
+| `prefix + s 1` through `prefix + s 9` | Jump to slots 1-9 |
 | `prefix + s 0` | Jump to slot 10 |
-| `prefix + s n` | Jump to next focused window |
-| `prefix + s p` | Jump to previous focused window |
-| `prefix + s a` | Add current window to the first free slot (auto, no duplicates) |
-| `prefix + s A` | Assign current window to a specific slot (prompted) |
-| `prefix + s d` | Delete/clear a specific slot (prompted) |
-| `prefix + s m` | Move/reorder a slot (prompted: `from:to` format) |
-| `prefix + s l` | List all occupied slots in fzf with preview |
-| `prefix + s s` | Show all occupied slots in the tmux message bar for 8 seconds |
-| `prefix + s ?` | Show focus-mode help |
-| `prefix + s c` | Clear all 10 slots (with y/n confirmation) |
-| `prefix + s Esc` | Exit focus key table without action |
+| `prefix + s n` | Jump to next bookmarked window |
+| `prefix + s p` | Jump to previous bookmarked window |
+| `prefix + s a` | Add current window to the first free slot |
+| `prefix + s A` | Assign current window to a specific slot |
+| `prefix + s d` | Delete a specific slot |
+| `prefix + s m` | Move/reorder a slot with `from:to` |
+| `prefix + s l` | List occupied slots in fzf with preview |
+| `prefix + s s` | Show occupied slots in the tmux message bar |
+| `prefix + s ?` | Show bookmark-mode help |
+| `prefix + s c` | Clear all slots with confirmation |
+| `prefix + s Esc` | Exit bookmark mode |
 
 Direct cycle shortcuts are also installed:
 
 | Key sequence | Action |
 |---|---|
-| `Alt+Shift+PageDown` | Jump to next focused window |
-| `Alt+Shift+PageUp` | Jump to previous focused window |
-| `Alt+n` | Jump to next focused window |
-| `Alt+p` | Jump to previous focused window |
-
----
+| `Alt+n` | Jump to next bookmarked window |
+| `Alt+p` | Jump to previous bookmarked window |
+| `Alt+Shift+PageDown` | Jump to next bookmarked window when supported by terminal |
+| `Alt+Shift+PageUp` | Jump to previous bookmarked window when supported by terminal |
 
 ## Workflows
 
-### Basic: Add and jump
+### Add and Jump
 
 1. Navigate to the window you want to bookmark.
-2. `prefix + s a` — adds it to the first free slot.
-3. `prefix + s 1` — jumps back to it later.
+2. Press `prefix + s a`.
+3. Later, press `prefix + s 1` to jump back to slot 1.
 
-If the current window is already focused, it will not be added again. tmux shows the existing slot number instead.
+If the current window is already bookmarked, tmux shows the existing slot number instead of adding a duplicate.
 
-### Assign to a specific slot
+### Assign to a Specific Slot
 
 1. Navigate to the window.
-2. `prefix + s A`, type `5`, press Enter.
-3. The window is now in slot 5. `prefix + s 5` jumps to it.
+2. Press `prefix + s A`, type `5`, and press Enter.
+3. Use `prefix + s 5` to jump to that window.
 
-Assigning to a specific slot overwrites that slot. If the same window already exists in another slot, the old entry is cleared so one window is only stored once.
+Assigning overwrites that slot. If the same window exists in another slot, the old entry is cleared so one window appears only once.
 
-### Reorder by priority
+### Reorder by Priority
 
-When slots 1-5 are filled and you want to promote slot 5 to slot 2:
+1. Press `prefix + s m`.
+2. Type `5:2` and press Enter.
+3. Slot 5 moves to slot 2, and the slots between shift to keep ordering stable.
 
-1. `prefix + s m`
-2. Type `5:2`, press Enter.
-3. Slot 5 content moves to slot 2. Existing slots 2-4 shift down one position.
+### List with fzf
 
-### View and jump with fzf
-
-1. `prefix + s l`
-2. A floating fzf window shows all occupied slots with preview of their windows.
-3. Type to filter, press Enter to jump.
-
-### Cycle focused windows
-
-Use either focus-mode keys:
-
-```text
-prefix + s n  # next focused window
-prefix + s p  # previous focused window
-```
-
-Or direct shortcuts:
-
-```text
-Alt+Shift+PageDown  # next focused window
-Alt+Shift+PageUp    # previous focused window
-Alt+n               # next focused window, more terminal-compatible
-Alt+p               # previous focused window, more terminal-compatible
-```
-
-### Show status bar
-
-1. `prefix + s s`
-2. A message like `focus: [1]editor [work] [2]tests [project]` appears briefly.
-
----
+1. Press `prefix + s l`.
+2. Filter the bookmark list.
+3. Press Enter to jump.
 
 ## Storage
 
-All focus data is stored in:
+Bookmark data is stored in:
 
+```text
+~/.config/tmux-window-bookmarks/list
 ```
+
+The file has exactly 10 lines. Each line maps to one slot and stores only a tmux `window_id`, such as `@12`.
+
+The old pre-rename path was:
+
+```text
 ~/.config/tmux-window-focus/list
 ```
 
-The file is plain text with exactly 10 lines. Each line corresponds to a slot (line 1 = slot 1, etc.). Non-empty lines contain only one value: tmux `window_id`.
+On first run, if the new bookmarks list does not exist but the old focus list exists, the plugin copies the old list to the new path. It does not delete the old file.
 
-```
-<window_id>
-```
+## Why window_id?
 
-Example:
-```
-@12
-@18
+tmux `window_id` values stay stable even when windows are reordered or renumbered. This keeps bookmarks window-only and avoids storing session names. Display labels are resolved live as `window-name [session-name]`.
 
-@5
-```
+## Scripts
 
-Slots 3, 6-10 are empty (free). You can edit this file manually — the scripts re-read it each time. Session name is **not stored**. Window name and session name are resolved live from tmux only for display, using the pattern `window-name [session-name]`.
+All helpers live in `scripts/`.
 
-### Why window_id?
-
-tmux assigns a stable `window_id` (like `@12`) to each window at creation. Unlike `session:index`, this identifier does not change when windows are reordered or renumbered. This keeps the focus list window-only and avoids persisting session data.
-
----
-
-## Example session
-
-```text
-You have these tmux sessions/windows:
-
-  work:    1 (editor)  2 (server)  3 (logs)
-  project: 1 (vim)     2 (tests)   3 (docs)
-  personal: 1 (music)
-
-You use editor, server, tests, and music most often.
-
-Step 1: Go to work:1, press prefix + s a → slot 1
-Step 2: Go to work:2, press prefix + s a → slot 2
-Step 3: Go to project:2, press prefix + s a → slot 3
-Step 4: Go to personal:1, press prefix + s a → slot 4
-
-Now:
-  prefix + s 1 → work:1 (editor)
-  prefix + s 2 → work:2 (server)
-  prefix + s 3 → project:2 (tests)
-  prefix + s 4 → personal:1 (music)
-```
-
----
-
-## Scripts reference
-
-All scripts live in `scripts/` and are called from the key bindings.
-
-| Script | Purpose | Arguments |
-|---|---|---|
-| `focus-go.sh` | Jump to a slot | `N` (1-10) |
-| `focus-add.sh` | Add current window to first free slot | none |
-| `focus-assign.sh` | Assign current window to a specific slot | `N` (1-10) |
-| `focus-delete.sh` | Clear a specific slot | `N` (1-10) |
-| `focus-clear.sh` | Clear all 10 slots | none |
-| `focus-move.sh` | Reorder a slot (shift priority) | `from:to` format |
-| `focus-list.sh` | Interactive fzf list with preview | none |
-| `focus-show.sh` | Display all slots in tmux message | none |
-| `focus-common.sh` | Shared library (sourced by all others) | n/a |
-
-### Running scripts directly
-
-Scripts can be run from a shell attached to a running tmux server for testing:
-
-```bash
-cd ~/.tmux/plugins/tmux-window-focus/scripts
-./focus-go.sh 1
-./focus-add.sh
-./focus-show.sh
-```
-
-Messages are displayed via `tmux display-message` and appear in the tmux message bar.
-
----
-
-## Customization
-
-### Change the prefix key
-
-Edit the binding in `tmux-window-focus.conf` or your `.tmux.conf`:
-
-```tmux
-# Example: use prefix + z instead of prefix + s
-unbind s
-bind z switch-client -T tmux-window-focus
-```
-
-### Change number of slots
-
-Edit `scripts/focus-common.sh`:
-
-```bash
-FOCUS_SLOTS=10  # change to any number
-```
-
-Then add corresponding key bindings for new slots.
-
-### Status bar integration
-
-Add to your `~/.tmux.conf`:
-
-```tmux
-set -g status-right '#[fg=cyan]F:#(~/.tmux/plugins/tmux-window-focus/scripts/focus-status.sh)/10'
-```
-
-Create `focus-status.sh`:
-
-```bash
-#!/usr/bin/env bash
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/focus-common.sh"
-count_occupied
-```
-
----
+| Script | Purpose |
+|---|---|
+| `bookmark-go.sh` | Jump to a slot |
+| `bookmark-add.sh` | Add current window to first free slot |
+| `bookmark-assign.sh` | Assign current window to a specific slot |
+| `bookmark-delete.sh` | Clear a specific slot |
+| `bookmark-clear.sh` | Clear all slots |
+| `bookmark-move.sh` | Reorder a slot |
+| `bookmark-list.sh` | Interactive fzf list with preview |
+| `bookmark-show.sh` | Display occupied slots in tmux message bar |
+| `bookmark-next.sh` | Cycle to next bookmarked window |
+| `bookmark-prev.sh` | Cycle to previous bookmarked window |
+| `bookmark-common.sh` | Shared storage and tmux helper functions |
 
 ## Architecture
 
 ```text
-User presses prefix + s
-  │
-  ▼
-enters tmux-window-focus key table
-  │
-  ├── 1-0 → focus-go.sh N → read slot N → switch to window
-  ├── a   → focus-add.sh  → find empty slot → write current window_id
-  ├── A   → focus-assign.sh N → write to specific slot
-  ├── d   → focus-delete.sh N → clear slot
-  ├── m   → focus-move.sh from:to → shift entries → reorder
-  ├── n/p → focus-next.sh / focus-prev.sh → cycle registered windows
-  ├── l   → focus-list.sh → fzf → select → jump
-  ├── s   → focus-show.sh → display-message
-  ├── c   → confirm → focus-clear.sh → clear all
-  └── Esc → exit to root table
+prefix + s
+  -> tmux-window-bookmarks key table
+  -> 1-0: bookmark-go.sh
+  -> a: bookmark-add.sh
+  -> A: bookmark-assign.sh
+  -> d: bookmark-delete.sh
+  -> m: bookmark-move.sh
+  -> n/p: bookmark-next.sh / bookmark-prev.sh
+  -> l: bookmark-list.sh
+  -> s: bookmark-show.sh
+  -> c: bookmark-clear.sh
 ```
 
-All scripts source `focus-common.sh` for shared functions:
-
-```text
-focus-common.sh
-  ├── ensure_list_file()   — create ~/.config/tmux-window-focus/list
-  ├── read_slot(N)         — read line N from file
-  ├── write_slot(N, val)   — write line N
-  ├── clear_slot(N)        — empty a slot
-  ├── find_first_empty()   — find next free slot
-  ├── get_current_target() — get current window_id only
-  ├── switch_to_window()   — switch client + select window
-  └── display_msg()        — tmux display-message
-```
-
-The root `tmux-window-focus.tmux` file is the plugin entrypoint. It detects the plugin directory and binds all commands to the correct local `scripts/` path, which makes TPM and custom clone paths work reliably.
-
----
-
-## Comparison with similar tools
+## Comparison
 
 | Tool | Approach | Best for |
 |---|---|---|
-| **tmux-window-focus** | 10 fixed numbered slots, curated list, priority ordering | Users who want a small set of important windows available instantly |
-| **tmux-fzf** | Category menu (session/window/pane/...) then fzf | Users who want access to everything |
-| **session-window-fzf** | Flat combined list of all sessions and windows | Users who want to fuzzy-search everything at once |
-| **choose-tree** | Built-in tree view, no fzf | Users who prefer a hierarchical view |
-
----
+| `tmux-window-bookmarks` | 10 fixed numbered bookmark slots | Important windows you want instantly available |
+| `tmux-fzf` | Category menu then fzf | Accessing all tmux objects |
+| `choose-tree` | Built-in tree view | Hierarchical navigation without fzf |
 
 ## License
 
 MIT
 
----
-
 ## Links
 
-- GitHub: [donnyaw/tmux-window-focus](https://github.com/donnyaw/tmux-window-focus)
+- GitHub: [donnyaw/tmux-window-bookmarks](https://github.com/donnyaw/tmux-window-bookmarks)
 - Author: [donnyaw](https://github.com/donnyaw)

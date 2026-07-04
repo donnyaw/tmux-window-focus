@@ -2,11 +2,11 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/focus-common.sh"
+source "$SCRIPT_DIR/bookmark-common.sh"
 
 slot="${1:-}"
 if [[ -z "$slot" ]]; then
-  display_msg "usage: focus-delete.sh <slot>"
+  display_msg "usage: bookmark-delete.sh <slot>"
   exit 1
 fi
 
@@ -16,9 +16,9 @@ if ! [[ "$slot" =~ ^[1-9]$|^10$ ]]; then
 fi
 
 if slot_is_empty "$slot"; then
-  display_msg "focus slot $slot is already empty"
+  display_msg "bookmark slot $slot is already empty"
   exit 0
 fi
 
 clear_slot "$slot"
-display_msg "cleared focus slot $slot"
+display_msg "cleared bookmark slot $slot"

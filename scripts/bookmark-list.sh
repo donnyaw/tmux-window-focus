@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/focus-common.sh"
+source "$SCRIPT_DIR/bookmark-common.sh"
 
 ensure_list_file
 
@@ -18,15 +18,15 @@ while IFS= read -r target; do
   else
     lines+="${slot}${TAB}[${slot}] stale:${target}${TAB}${target}"$'\n'
   fi
-done < "$FOCUS_FILE"
+done < "$BOOKMARK_FILE"
 
 if [[ -z "$lines" ]]; then
-  display_msg "no windows in focus list"
+  display_msg "no windows in bookmark list"
   exit 0
 fi
 
 selection=$(echo "$lines" | fzf-tmux -p -w 60% -h 40% \
-  --header 'focus slots | Enter=jump' \
+  --header 'bookmark slots | Enter=jump' \
   --delimiter $'\t' \
   --with-nth 2 \
   --preview '
@@ -43,5 +43,5 @@ fi
 wid=$(echo "$selection" | cut -f3)
 
 if ! switch_to_window "$wid"; then
-  display_msg "focus target no longer exists"
+  display_msg "bookmark target no longer exists"
 fi

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/focus-common.sh"
+source "$SCRIPT_DIR/bookmark-common.sh"
 
 direction="${1:-next}"
 current=$(tmux display-message -p '#{window_id}')
@@ -18,11 +18,11 @@ while IFS= read -r target; do
   target_exists "$target" || continue
   slots+=("$slot")
   targets+=("$target")
-done < "$FOCUS_FILE"
+done < "$BOOKMARK_FILE"
 
 count=${#targets[@]}
 if [[ "$count" -eq 0 ]]; then
-  display_msg "focus list is empty"
+  display_msg "bookmark list is empty"
   exit 0
 fi
 
@@ -49,7 +49,7 @@ fi
 target="${targets[$next_pos]}"
 slot="${slots[$next_pos]}"
 if switch_to_window "$target"; then
-  display_msg "focus slot $slot: $(target_label "$target")"
+  display_msg "bookmark slot $slot: $(target_label "$target")"
 else
-  display_msg "focus slot $slot: window no longer exists"
+  display_msg "bookmark slot $slot: window no longer exists"
 fi

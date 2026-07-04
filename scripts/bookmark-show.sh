@@ -2,12 +2,12 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/focus-common.sh"
+source "$SCRIPT_DIR/bookmark-common.sh"
 
 ensure_list_file
 
 parts=""
-for slot in $(seq 1 "$FOCUS_SLOTS"); do
+for slot in $(seq 1 "$BOOKMARK_SLOTS"); do
   if ! slot_is_empty "$slot"; then
     target=$(read_slot "$slot")
     if target_exists "$target"; then
@@ -19,7 +19,7 @@ for slot in $(seq 1 "$FOCUS_SLOTS"); do
 done
 
 if [[ -z "$parts" ]]; then
-  display_msg "focus list is empty"
+  display_msg "bookmark list is empty"
 else
-  display_msg "focus:${parts}"
+  display_msg "bookmarks:${parts}"
 fi

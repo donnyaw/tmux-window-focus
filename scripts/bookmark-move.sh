@@ -2,11 +2,11 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/focus-common.sh"
+source "$SCRIPT_DIR/bookmark-common.sh"
 
 input="${1:-}"
 if [[ -z "$input" ]]; then
-  display_msg "usage: focus-move.sh <from>:<to>"
+  display_msg "usage: bookmark-move.sh <from>:<to>"
   exit 1
 fi
 
@@ -29,7 +29,7 @@ if [[ "$from" == "$to" ]]; then
 fi
 
 if slot_is_empty "$from"; then
-  display_msg "focus slot $from is empty, nothing to move"
+  display_msg "bookmark slot $from is empty, nothing to move"
   exit 0
 fi
 
@@ -48,4 +48,4 @@ else
 fi
 
 write_slot "$to" "$saved"
-display_msg "moved focus slot $from -> $to"
+display_msg "moved bookmark slot $from -> $to"
