@@ -112,7 +112,7 @@ Bookmark data is stored in:
 
 The file has exactly 10 lines. Each line maps to one slot and stores only a tmux `window_id`, such as `@12`.
 
-If you have bookmark data from the previous storage path, the first run copies it automatically to the new path.
+If you have bookmark data from a previous storage path, you can copy it manually.
 
 ## Why window_id?
 
