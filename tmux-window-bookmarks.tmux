@@ -4,7 +4,7 @@ set -euo pipefail
 CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPTS_DIR="$CURRENT_DIR/scripts"
 
-tmux bind-key s "display-message -d 8000 \"bookmarks: 1-0 jump | n/p cycle | a add | l list | ? help\" ; switch-client -T tmux-window-bookmarks"
+tmux bind-key s "display-message -d 5000 \"bookmarks: 1-0 jump | n/p cycle | a add | l list | ? help\" ; switch-client -T tmux-window-bookmarks"
 tmux bind-key -n M-S-PPage run-shell -b "$SCRIPTS_DIR/bookmark-prev.sh"
 tmux bind-key -n M-S-NPage run-shell -b "$SCRIPTS_DIR/bookmark-next.sh"
 tmux bind-key -n M-p run-shell -b "$SCRIPTS_DIR/bookmark-prev.sh"
@@ -29,6 +29,6 @@ tmux bind-key -T tmux-window-bookmarks n run-shell -b "$SCRIPTS_DIR/bookmark-nex
 tmux bind-key -T tmux-window-bookmarks p run-shell -b "$SCRIPTS_DIR/bookmark-prev.sh"
 tmux bind-key -T tmux-window-bookmarks l run-shell -b "$SCRIPTS_DIR/bookmark-list.sh"
 tmux bind-key -T tmux-window-bookmarks s run-shell -b "$SCRIPTS_DIR/bookmark-show.sh"
-tmux bind-key -T tmux-window-bookmarks ? display-message -d 8000 "bookmarks: 1-0 jump | n next | p prev | a add | A assign | d delete | m move | l list | s show | c clear"
+tmux bind-key -T tmux-window-bookmarks "?" display-message -d 5000 "bookmarks: 1-0 jump | n next | p prev | a add | A assign | d delete | m move | l list | s show | c clear"
 tmux bind-key -T tmux-window-bookmarks c confirm-before -p "clear all bookmark slots? (y/n)" "run-shell -b '$SCRIPTS_DIR/bookmark-clear.sh'"
 tmux bind-key -T tmux-window-bookmarks Escape switch-client -T root
