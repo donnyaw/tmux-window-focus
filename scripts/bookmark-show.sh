@@ -13,7 +13,7 @@ for slot in $(seq 1 "$BOOKMARK_SLOTS"); do
     if target_exists "$target"; then
       parts+=" [$slot]$(target_label "$target")"
     else
-      parts+=" [$slot]stale:$target"
+      clear_slot "$slot"
     fi
   fi
 done

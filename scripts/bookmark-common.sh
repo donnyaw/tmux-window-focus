@@ -83,7 +83,7 @@ target_exists() {
   local target="$1"
   local wid
   wid=$(get_window_id "$target")
-  tmux display-message -p -t "$wid" '#{window_id}' >/dev/null 2>&1
+  tmux list-windows -a -F '#{window_id}' 2>/dev/null | grep -Fx "$wid" >/dev/null
 }
 
 target_session() {

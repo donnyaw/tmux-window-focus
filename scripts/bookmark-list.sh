@@ -16,7 +16,7 @@ while IFS= read -r target; do
     label=$(target_label "$target")
     lines+="${slot}${TAB}[${slot}] ${label}${TAB}${target}"$'\n'
   else
-    lines+="${slot}${TAB}[${slot}] stale:${target}${TAB}${target}"$'\n'
+    clear_slot "$slot"
   fi
 done < "$BOOKMARK_FILE"
 

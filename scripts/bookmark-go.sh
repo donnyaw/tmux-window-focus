@@ -22,7 +22,8 @@ fi
 
 target=$(read_slot "$slot")
 if ! switch_to_window "$target"; then
-  display_msg "bookmark slot $slot: window no longer exists"
+  clear_slot "$slot"
+  display_msg "bookmark slot $slot: window no longer exists, slot cleared"
   exit 0
 fi
 display_msg "jumped to bookmark slot $slot"

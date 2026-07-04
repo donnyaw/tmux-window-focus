@@ -15,7 +15,10 @@ while IFS= read -r target; do
   slot=$((slot + 1))
   [[ -z "$target" ]] && continue
   target=$(get_window_id "$target")
-  target_exists "$target" || continue
+  if ! target_exists "$target"; then
+    clear_slot "$slot"
+    continue
+  fi
   slots+=("$slot")
   targets+=("$target")
 done < "$BOOKMARK_FILE"
