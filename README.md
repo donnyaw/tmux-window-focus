@@ -56,6 +56,7 @@ Press `prefix + s` to enter the `tmux-window-bookmarks` key table.
 | `prefix + s a` | Add current window to the first free slot |
 | `prefix + s A` | Assign current window to a specific slot |
 | `prefix + s d` | Delete a specific slot |
+| `prefix + s k` | Delete (kill) current window's bookmark |
 | `prefix + s m` | Move/reorder a slot with `from:to` |
 | `prefix + s l` | List occupied slots in fzf with preview |
 | `prefix + s s` | Show occupied slots in the tmux message bar |
@@ -128,6 +129,7 @@ All helpers live in `scripts/`.
 | `bookmark-add.sh` | Add current window to first free slot |
 | `bookmark-assign.sh` | Assign current window to a specific slot |
 | `bookmark-delete.sh` | Clear a specific slot |
+| `bookmark-delete-current.sh` | Clear the bookmark for the current window |
 | `bookmark-clear.sh` | Clear all slots |
 | `bookmark-move.sh` | Reorder a slot |
 | `bookmark-list.sh` | Interactive fzf list with preview |
@@ -145,6 +147,7 @@ prefix + s
   -> a: bookmark-add.sh
   -> A: bookmark-assign.sh
   -> d: bookmark-delete.sh
+  -> D: bookmark-delete-current.sh
   -> m: bookmark-move.sh
   -> n/p: bookmark-next.sh / bookmark-prev.sh
   -> l: bookmark-list.sh

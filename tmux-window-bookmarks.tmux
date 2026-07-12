@@ -24,11 +24,12 @@ tmux bind-key -T tmux-window-bookmarks 0 run-shell -b "$SCRIPTS_DIR/bookmark-go.
 tmux bind-key -T tmux-window-bookmarks a run-shell -b "$SCRIPTS_DIR/bookmark-add.sh"
 tmux bind-key -T tmux-window-bookmarks A command-prompt -p "assign to slot (1-10)" "run-shell -b '$SCRIPTS_DIR/bookmark-assign.sh %%'"
 tmux bind-key -T tmux-window-bookmarks d command-prompt -p "delete slot (1-10)" "run-shell -b '$SCRIPTS_DIR/bookmark-delete.sh %%'"
+tmux bind-key -T tmux-window-bookmarks k run-shell -b "$SCRIPTS_DIR/bookmark-delete-current.sh"
 tmux bind-key -T tmux-window-bookmarks m command-prompt -p "move from:to (e.g. 5:2)" "run-shell -b '$SCRIPTS_DIR/bookmark-move.sh %%'"
 tmux bind-key -T tmux-window-bookmarks n run-shell -b "$SCRIPTS_DIR/bookmark-next.sh"
 tmux bind-key -T tmux-window-bookmarks p run-shell -b "$SCRIPTS_DIR/bookmark-prev.sh"
 tmux bind-key -T tmux-window-bookmarks l run-shell -b "$SCRIPTS_DIR/bookmark-list.sh"
 tmux bind-key -T tmux-window-bookmarks s run-shell -b "$SCRIPTS_DIR/bookmark-show.sh"
-tmux bind-key -T tmux-window-bookmarks "?" display-message -d 5000 "bookmarks: 1-0 jump | n next | p prev | a add | A assign | d delete | m move | l list | s show | c clear"
+tmux bind-key -T tmux-window-bookmarks "?" display-message -d 5000 "bookmarks: 1-0 jump | n next | p prev | a add | A assign | d delete | k kill current | m move | l list | s show | c clear"
 tmux bind-key -T tmux-window-bookmarks c confirm-before -p "clear all bookmark slots? (y/n)" "run-shell -b '$SCRIPTS_DIR/bookmark-clear.sh'"
 tmux bind-key -T tmux-window-bookmarks Escape switch-client -T root
