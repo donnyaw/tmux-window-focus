@@ -72,7 +72,19 @@ slot_is_empty() {
 }
 
 display_msg() {
-  tmux display-message -d "${BOOKMARK_MESSAGE_DURATION:-8000}" "$*"
+  local duration="${BOOKMARK_MESSAGE_DURATION:-8000}"
+  if [[ -z "${BOOKMARK_CLIENT:-}" ]]; then
+    tmux display-message -d "$duration" "$*"
+    return
+  fi
+
+  tmux display-message -c "$BOOKMARK_CLIENT" -d "$duration" "$*"
+
+  # Force a status redraw after expiry for terminals that do not repaint it.
+  (
+    sleep "$(printf '%d.%03d' "$((duration / 1000))" "$((duration % 1000))")"
+    tmux refresh-client -S -t "$BOOKMARK_CLIENT" >/dev/null 2>&1 || true
+  ) &
 }
 
 get_window_id() {
@@ -101,6 +113,10 @@ switch_to_window() {
   if ! target_exists "$wid"; then
     return 1
   fi
-  tmux switch-client -t "$(target_session "$wid")"
+  if [[ -n "${BOOKMARK_CLIENT:-}" ]]; then
+    tmux switch-client -c "$BOOKMARK_CLIENT" -t "$(target_session "$wid")"
+  else
+    tmux switch-client -t "$(target_session "$wid")"
+  fi
   tmux select-window -t "$wid"
 }

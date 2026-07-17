@@ -5,6 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/bookmark-common.sh"
 
 slot="${1:-}"
+BOOKMARK_CLIENT="${2:-}"
 if [[ -z "$slot" ]]; then
   display_msg "usage: bookmark-go.sh <slot>"
   exit 1
@@ -26,4 +27,5 @@ if ! switch_to_window "$target"; then
   display_msg "bookmark slot $slot: window no longer exists, slot cleared"
   exit 0
 fi
-display_msg "jumped to bookmark slot $slot"
+label=$(target_label "$target")
+display_msg "jumped to bookmark slot $slot: $label"
